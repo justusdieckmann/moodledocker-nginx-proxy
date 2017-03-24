@@ -116,3 +116,17 @@ server {
 {{ end }}
 
 }
+server {
+	server_name 172.17.0.1;
+	listen 80 ;
+	access_log /var/log/nginx/access.log vhost;
+
+{{ range $host2, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
+{{ $is_regexp := hasPrefix "~" $host2 }}
+{{ $upstream_name := when $is_regexp (sha1 $host2) $host2 }}
+	location /{{ $host2 }}/ {
+		proxy_pass http://{{ trim $upstream_name }};
+	}
+{{ end }}
+
+}
