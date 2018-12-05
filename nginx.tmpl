@@ -106,6 +106,7 @@ server {
 	server_name localhost;
 	listen 80 ;
 	access_log /var/log/nginx/access.log vhost;
+        client_max_body_size 256M;
 
 {{ range $host2, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ $is_regexp := hasPrefix "~" $host2 }}
@@ -120,6 +121,7 @@ server {
 	server_name 172.17.0.1;
 	listen 80 ;
 	access_log /var/log/nginx/access.log vhost;
+        client_max_body_size 256M;
 
 {{ range $host2, $containers := groupByMulti $ "Env.VIRTUAL_HOST" "," }}
 {{ $is_regexp := hasPrefix "~" $host2 }}
